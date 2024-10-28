@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisión de Síntomas Recientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .symptom {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="static/header-component-doctor.js" defer></script>
+</head>
+<body>
+    <header-component-doctor></header-component-doctor>
+    <div class="container">
+        <h2>Consulta de Síntomas Recientes</h2>
+        <button id="load-symptoms">Cargar Síntomas Recientes</button>
+        <div id="symptoms-list"></div>
+    </div>
+    <script src="static/recent_symptoms.js"></script>
+</body>
+</html>

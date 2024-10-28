@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisar Recomendaciones</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .recommendations {
+            margin-top: 20px;
+        }
+        .recommendation {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="static/header-component.js" defer></script>
+    <script src="static/notification-bell.js" defer></script>
+</head>
+<body>
+    <header-component></header-component>
+    <notification-bell></notification-bell>
+    <div class="container">
+        <h2>Revisar Recomendaciones</h2>
+        <div id="message" class="error"></div>
+        <!--<input type="text" id="username" placeholder="Nombre de Usuario" required>-->
+        <button id="get-recommendations">Obtener Recomendaciones</button>
+        <div class="recommendations" id="recommendations"></div>
+    </div>
+
+    <script src="static/check_recommendations.js"></script>
+</body>
+</html>

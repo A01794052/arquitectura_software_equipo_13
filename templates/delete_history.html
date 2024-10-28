@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Documentos</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button {
+            padding: 6px 12px;
+            color: #fff;
+            background-color: #f44336;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="static/header-component.js" defer></script>
+    <script src="static/notification-bell.js" defer></script>
+</head>
+<body>
+    <header-component></header-component>
+    <notification-bell></notification-bell>
+    <h1>Lista de Documentos</h1>
+    <table id="documentsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Documento</th>
+                <th>Fecha de Subida</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Filas de documentos cargadas dinámicamente -->
+        </tbody>
+    </table>
+
+    <script src="static/delete_history.js"></script>
+</body>
+</html>
