@@ -1,0 +1,429 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: RESTJedi
+  description: API para servicios REST de Jedi
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/A01794052/RESTJedi/1.0
+paths:
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{id}:
+    put:
+      summary: Update a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+
+    delete:
+      summary: Delete a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+          
+  /symptoms:
+    get:
+      summary: Get all symptoms
+      tags:
+        - Symptoms
+      responses:
+        '200':
+          description: A list of symptoms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Symptom'
+
+    post:
+      summary: Create a new symptom entry
+      tags:
+        - Symptoms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SymptomInput'
+      responses:
+        '201':
+          description: Symptom entry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Symptom'
+
+  /symptoms/{id}:
+    put:
+      summary: Update a symptom entry by ID
+      tags:
+        - Symptoms
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SymptomInput'
+      responses:
+        '200':
+          description: Symptom entry updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Symptom'
+        '404':
+          description: Symptom entry not found
+
+    delete:
+      summary: Delete a symptom entry by ID
+      tags:
+        - Symptoms
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Symptom entry deleted successfully
+        '404':
+          description: Symptom entry not found
+
+  /documents:
+    get:
+      summary: Get all documents
+      tags:
+        - Documents
+      responses:
+        '200':
+          description: A list of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+
+    post:
+      summary: Create a new document entry
+      tags:
+        - Documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentInput'
+      responses:
+        '201':
+          description: Document entry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+
+  /documents/{id}:
+    put:
+      summary: Update a document entry by ID
+      tags:
+        - Documents
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentInput'
+      responses:
+        '200':
+          description: Document entry updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          description: Document entry not found
+
+    delete:
+      summary: Delete a document entry by ID
+      tags:
+        - Documents
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Document entry deleted successfully
+        '404':
+          description: Document entry not found
+
+  /recommendations:
+    get:
+      summary: Get all recommendations
+      tags:
+        - Recommendations
+      responses:
+        '200':
+          description: A list of recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recommendation'
+
+    post:
+      summary: Create a new recommendation
+      tags:
+        - Recommendations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationInput'
+      responses:
+        '201':
+          description: Recommendation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+
+  /recommendations/{id}:
+    put:
+      summary: Update a recommendation by ID
+      tags:
+        - Recommendations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationInput'
+      responses:
+        '200':
+          description: Recommendation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+        '404':
+          description: Recommendation not found
+
+    delete:
+      summary: Delete a recommendation by ID
+      tags:
+        - Recommendations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Recommendation deleted successfully
+        '404':
+          description: Recommendation not found
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        curp:
+          type: string
+        password:
+          type: string
+        tipo_de_usuario_id:
+          type: integer
+
+    UserInput:
+      type: object
+      properties:
+        username:
+          type: string
+        curp:
+          type: string
+        password:
+          type: string
+        tipo_de_usuario_id:
+          type: integer
+      required:
+        - username
+        - curp
+        - password
+
+    Symptom:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        symptoms:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        symptom_status_id:
+          type: integer
+
+    SymptomInput:
+      type: object
+      properties:
+        username:
+          type: string
+        symptoms:
+          type: string
+        symptom_status_id:
+          type: integer
+      required:
+        - username
+        - symptoms
+        - symptom_status_id
+        
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        file_path:
+          type: string
+        file_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    DocumentInput:
+      type: object
+      properties:
+        username:
+          type: string
+        file_path:
+          type: string
+        file_name:
+          type: string
+      required:
+        - username
+        - file_path
+        - file_name
+        
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: integer
+        recommendation:
+          type: string
+        checked:
+          type: integer
+        symptom_id:
+          type: integer
+
+    RecommendationInput:
+      type: object
+      properties:
+        recommendation:
+          type: string
+        checked:
+          type: integer
+        symptom_id:
+          type: integer
+      required:
+        - recommendation
+        - checked
+        - symptom_id
