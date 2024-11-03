@@ -10,21 +10,33 @@ servers:
 paths:
   /users:
     get:
-      summary: Get all users
+      summary: Obtener todos los usuarios
       tags:
         - Users
       responses:
         '200':
-          description: A list of users
+          description: Lista de usuarios
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    - id: 1
+                      username: "jdoe"
+                      curp: "JDOE800101HDFRRL00"
+                      tipo_de_usuario_id: 1
+                    - id: 2
+                      username: "asmith"
+                      curp: "ASM800101HDFRRL00"
+                      tipo_de_usuario_id: 2
 
     post:
-      summary: Create a new user
+      summary: Crear un nuevo usuario
       tags:
         - Users
       requestBody:
@@ -35,21 +47,30 @@ paths:
               $ref: '#/components/schemas/UserInput'
       responses:
         '201':
-          description: User created successfully
+          description: Usuario creado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 3
+                    username: "newuser"
+                    curp: "NEWU800101HDFRRL00"
+                    tipo_de_usuario_id: 1
 
   /users/{id}:
     put:
-      summary: Update a user by ID
+      summary: Actualizar un usuario por ID
       tags:
         - Users
       parameters:
         - name: id
           in: path
           required: true
+          description: ID del usuario
           schema:
             type: integer
       requestBody:
@@ -60,47 +81,66 @@ paths:
               $ref: '#/components/schemas/UserInput'
       responses:
         '200':
-          description: User updated successfully
+          description: Usuario actualizado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '404':
-          description: User not found
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 1
+                    username: "jdoe_updated"
+                    curp: "JDOE800101HDFRRL00"
+                    tipo_de_usuario_id: 1
 
     delete:
-      summary: Delete a user by ID
+      summary: Eliminar un usuario por ID
       tags:
         - Users
       parameters:
         - name: id
           in: path
           required: true
+          description: ID del usuario
           schema:
             type: integer
       responses:
         '204':
-          description: User deleted successfully
-        '404':
-          description: User not found
-          
+          description: Usuario eliminado
+
   /symptoms:
     get:
-      summary: Get all symptoms
+      summary: Obtener todos los síntomas
       tags:
         - Symptoms
       responses:
         '200':
-          description: A list of symptoms
+          description: Lista de síntomas
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Symptom'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    - id: 1
+                      username: "jdoe"
+                      symptoms: "Fiebre, tos"
+                      created_at: "2024-11-01T12:00:00Z"
+                      symptom_status_id: 1
+                    - id: 2
+                      username: "asmith"
+                      symptoms: "Dolor de cabeza"
+                      created_at: "2024-11-02T08:30:00Z"
+                      symptom_status_id: 2
 
     post:
-      summary: Create a new symptom entry
+      summary: Crear un nuevo síntoma
       tags:
         - Symptoms
       requestBody:
@@ -111,21 +151,31 @@ paths:
               $ref: '#/components/schemas/SymptomInput'
       responses:
         '201':
-          description: Symptom entry created successfully
+          description: Síntoma creado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Symptom'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 3
+                    username: "newuser"
+                    symptoms: "Náuseas"
+                    created_at: "2024-11-03T10:00:00Z"
+                    symptom_status_id: 1
 
   /symptoms/{id}:
     put:
-      summary: Update a symptom entry by ID
+      summary: Actualizar un síntoma por ID
       tags:
         - Symptoms
       parameters:
         - name: id
           in: path
           required: true
+          description: ID del síntoma
           schema:
             type: integer
       requestBody:
@@ -136,47 +186,67 @@ paths:
               $ref: '#/components/schemas/SymptomInput'
       responses:
         '200':
-          description: Symptom entry updated successfully
+          description: Síntoma actualizado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Symptom'
-        '404':
-          description: Symptom entry not found
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 1
+                    username: "jdoe"
+                    symptoms: "Fiebre, tos persistente"
+                    created_at: "2024-11-01T12:00:00Z"
+                    symptom_status_id: 2
 
     delete:
-      summary: Delete a symptom entry by ID
+      summary: Eliminar un síntoma por ID
       tags:
         - Symptoms
       parameters:
         - name: id
           in: path
           required: true
+          description: ID del síntoma
           schema:
             type: integer
       responses:
         '204':
-          description: Symptom entry deleted successfully
-        '404':
-          description: Symptom entry not found
+          description: Síntoma eliminado
 
   /documents:
     get:
-      summary: Get all documents
+      summary: Obtener todos los documentos
       tags:
         - Documents
       responses:
         '200':
-          description: A list of documents
+          description: Lista de documentos
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Document'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    - id: 1
+                      username: "jdoe"
+                      file_path: "/uploads/doc1.pdf"
+                      file_name: "doc1.pdf"
+                      created_at: "2024-11-01T12:00:00Z"
+                    - id: 2
+                      username: "asmith"
+                      file_path: "/uploads/doc2.pdf"
+                      file_name: "doc2.pdf"
+                      created_at: "2024-11-02T08:30:00Z"
 
     post:
-      summary: Create a new document entry
+      summary: Crear un nuevo documento
       tags:
         - Documents
       requestBody:
@@ -187,21 +257,31 @@ paths:
               $ref: '#/components/schemas/DocumentInput'
       responses:
         '201':
-          description: Document entry created successfully
+          description: Documento creado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Document'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 3
+                    username: "newuser"
+                    file_path: "/uploads/doc3.pdf"
+                    file_name: "doc3.pdf"
+                    created_at: "2024-11-03T10:00:00Z"
 
   /documents/{id}:
     put:
-      summary: Update a document entry by ID
+      summary: Actualizar un documento por ID
       tags:
         - Documents
       parameters:
         - name: id
           in: path
           required: true
+          description: ID del documento
           schema:
             type: integer
       requestBody:
@@ -212,47 +292,67 @@ paths:
               $ref: '#/components/schemas/DocumentInput'
       responses:
         '200':
-          description: Document entry updated successfully
+          description: Documento actualizado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Document'
-        '404':
-          description: Document entry not found
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 1
+                    username: "jdoe"
+                    file_path: "/uploads/doc1_updated.pdf"
+                    file_name: "doc1_updated.pdf"
+                    created_at: "2024-11-01T12:00:00Z"
 
     delete:
-      summary: Delete a document entry by ID
+      summary: Eliminar un documento por ID
       tags:
         - Documents
       parameters:
         - name: id
           in: path
           required: true
+          description: ID del documento
           schema:
             type: integer
       responses:
         '204':
-          description: Document entry deleted successfully
-        '404':
-          description: Document entry not found
+          description: Documento eliminado
 
   /recommendations:
     get:
-      summary: Get all recommendations
+      summary: Obtener todas las recomendaciones
       tags:
         - Recommendations
       responses:
         '200':
-          description: A list of recommendations
+          description: Lista de recomendaciones
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Recommendation'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    - id: 1
+                      recommendation: "Tomar suficiente agua."
+                      created_at: "2024-11-01T12:00:00Z"
+                      checked: 0
+                      symptom_id: 1
+                    - id: 2
+                      recommendation: "Descansar adecuadamente."
+                      created_at: "2024-11-02T08:30:00Z"
+                      checked: 1
+                      symptom_id: 2
 
     post:
-      summary: Create a new recommendation
+      summary: Crear una nueva recomendación
       tags:
         - Recommendations
       requestBody:
@@ -263,21 +363,31 @@ paths:
               $ref: '#/components/schemas/RecommendationInput'
       responses:
         '201':
-          description: Recommendation created successfully
+          description: Recomendación creada
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Recommendation'
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 3
+                    recommendation: "Consultar a un médico."
+                    created_at: "2024-11-03T10:00:00Z"
+                    checked: 0
+                    symptom_id: 1
 
   /recommendations/{id}:
     put:
-      summary: Update a recommendation by ID
+      summary: Actualizar una recomendación por ID
       tags:
         - Recommendations
       parameters:
         - name: id
           in: path
           required: true
+          description: ID de la recomendación
           schema:
             type: integer
       requestBody:
@@ -288,29 +398,35 @@ paths:
               $ref: '#/components/schemas/RecommendationInput'
       responses:
         '200':
-          description: Recommendation updated successfully
+          description: Recomendación actualizada
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Recommendation'
-        '404':
-          description: Recommendation not found
+              examples:
+                example-1:
+                  summary: Ejemplo de respuesta
+                  value:
+                    id: 1
+                    recommendation: "Aumentar la ingesta de líquidos."
+                    created_at: "2024-11-01T12:00:00Z"
+                    checked: 1
+                    symptom_id: 1
 
     delete:
-      summary: Delete a recommendation by ID
+      summary: Eliminar una recomendación por ID
       tags:
         - Recommendations
       parameters:
         - name: id
           in: path
           required: true
+          description: ID de la recomendación
           schema:
             type: integer
       responses:
         '204':
-          description: Recommendation deleted successfully
-        '404':
-          description: Recommendation not found
+          description: Recomendación eliminada
 
 components:
   schemas:
@@ -322,8 +438,6 @@ components:
         username:
           type: string
         curp:
-          type: string
-        password:
           type: string
         tipo_de_usuario_id:
           type: integer
@@ -343,7 +457,7 @@ components:
         - username
         - curp
         - password
-
+        
     Symptom:
       type: object
       properties:
@@ -409,6 +523,9 @@ components:
           type: integer
         recommendation:
           type: string
+        created_at:
+          type: string
+          format: date-time
         checked:
           type: integer
         symptom_id:
