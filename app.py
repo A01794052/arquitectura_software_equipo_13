@@ -4,6 +4,8 @@ import os
 from database import get_db_connection
 import requests
 import json
+import pika
+import uuid
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -80,56 +82,52 @@ def login():
             return jsonify({'success': True, 'message': 'Inicio de sesión exitoso!', 'usuario': user})
         else:
             return jsonify({'success': False, 'message': 'Nombre de usuario o contraseña incorrectos.'})
-    
+
+rabbitmq_connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', heartbeat=600))
+rabbitmq_channel = rabbitmq_connection.channel()
+
+# Declare a queue (it will only be created if it doesn't exist)
+rabbitmq_channel.queue_declare(queue='symptoms_queue', durable=True)
+
 @app.route('/register_symptoms', methods=['POST'])
 def register_symptoms():
     data = request.json
-    username = data['username']
+    username = session['username']['username']
     symptoms = data['symptoms']
 
+    # Insert symptoms into the database
     conn = get_db_connection()
     cursor = conn.cursor()
-
-    # Inserta los síntomas en la base de datos
     cursor.execute('INSERT INTO symptoms (username, symptoms, symptom_status_id) VALUES (%s, %s, %s)', (username, symptoms, 1))
+    symptom_id = cursor.lastrowid
     conn.commit()
     cursor.close()
     conn.close()
 
-    # Replace this URL with the correct local URL and endpoint
-    url = "http://localhost:11434/api/generate"
+    # Generate a unique ID to track this request
+    request_id = str(uuid.uuid4())
 
-    headers = {
-        "Content-Type": "application/json"
+    # Publish message to RabbitMQ queue
+    message = {
+        "request_id": request_id,
+        "symptom_id": symptom_id,
+        "symptoms": symptoms
     }
+    #Publicar un mensaje en rabbitmq para que sea consumido de manera asyncrona ya que los servidores de IA son mas caros a un servidor convencional
+    rabbitmq_channel.basic_publish(
+        exchange='',
+        routing_key='symptoms_queue',
+        body=json.dumps(message),
+        properties=pika.BasicProperties(
+            delivery_mode=2,  # Make message persistent
+        )
+    )
 
-    # Define your input data as required by Ollama
-    data = {
-        "model": "llama3.2",
-        "prompt": "Necesito que actues como si fueras un doctor y me digas que hacer para aliviar los siguientes sintomas: "+symptoms,
-        "stream": False
-    }
-
-    # Send the request
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-
-    # Handle the response
-    if response.status_code == 200:
-        response_text = response.text
-        data = json.loads(response_text)
-        actual_response = data["response"]
-        return jsonify({
-            'success': True,
-            'message': 'Síntomas registrados exitosamente! recibiras una notificacion del doctor mientras tanto checa la recomendacion del doctor IA en la parte de abajo',
-            'doctoria': actual_response
-        })
-    else:
-        print("Error:", response.status_code, response.text)
-        return jsonify({
-            'success': True,
-            'message': 'Síntomas registrados exitosamente! recibiras una notificacion del doctor mientras tanto checa la recomendacion del doctor IA en la parte de abajo',
-            'doctoria': "No Disponible"
-        })
+    return jsonify({
+        'success': True,
+        'message': 'Síntomas registrados exitosamente! recibiras una notificacion del doctor en un plazo de 2 semanas, mientras tanto te llegara una notificacion del doctor IA en un plazo no mayor a 24 horas',
+        'doctoria': "Procesando..."
+    })
 
 @app.route('/upload_document', methods=['POST'])
 def upload_document():
@@ -155,13 +153,13 @@ def upload_document():
 
     return jsonify({'success': True, 'message': 'Documento cargado exitosamente!'})
 
-@app.route('/recommendations/<username>', methods=['GET'])
-def get_recommendations(username):
+@app.route('/recommendations/<username>/<tiporecomendacion>', methods=['GET'])
+def get_recommendations(username, tiporecomendacion):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
     usernameVar = session.get('username')
-    cursor.execute('SELECT rec.recommendation as rec, rec.id as recid, sym.symptoms as sym FROM recommendations rec INNER JOIN symptoms sym ON rec.symptom_id=sym.id INNER JOIN users ON sym.username=users.username WHERE users.username=%s', (usernameVar['username'], ))
+    cursor.execute('SELECT rec.recommendation as rec, rec.id as recid, sym.symptoms, rec.tipo_de_recomendacion_id as sym FROM recommendations rec INNER JOIN symptoms sym ON rec.symptom_id=sym.id INNER JOIN users ON sym.username=users.username WHERE users.username=%s AND rec.tipo_de_recomendacion_id=%s', (usernameVar['username'], tiporecomendacion))
     recommendations = cursor.fetchall()
 
     cursor.close()
@@ -255,7 +253,7 @@ def submit_recommendation():
     cursor = conn.cursor()
 
     # Grabar la recomendación en la base de datos
-    cursor.execute('INSERT INTO recommendations (symptom_id, recommendation, checked) VALUES (%s, %s, %s)', (symptom_id, recommendation, 0))
+    cursor.execute('INSERT INTO recommendations (symptom_id, recommendation, checked, tipo_de_recomendacion_id) VALUES (%s, %s, %s, %s)', (symptom_id, recommendation, 0, 2))
     # Actualizar el estado del síntoma a '1' (supongo que '1' significa activo o similar)
     cursor.execute(
         'UPDATE symptoms SET symptom_status_id = %s WHERE id = %s',

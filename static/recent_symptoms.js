@@ -10,7 +10,7 @@ document.getElementById('load-symptoms').addEventListener('click', function() {
             data.symptoms.forEach(symptom => {
                 const symptomDiv = document.createElement('div');
                 symptomDiv.className = 'symptom';
-                symptomDiv.innerHTML = `Usuario: ${symptom.username} | Síntoma: ${symptom.symptom} | Registrado en: ${symptom.created_at} <a href='symptom_recommendation.html?id=${symptom.id}'>Hacer recomendacion</a>`;
+                symptomDiv.innerHTML = `Usuario: ${symptom.username} | Síntoma: ${symptom.symptoms} | Registrado en: ${symptom.created_at} <a href='symptom_recommendation.html?id=${symptom.id}'>Hacer recomendacion</a>`;
                 symptomsList.appendChild(symptomDiv);
             });
         } else {

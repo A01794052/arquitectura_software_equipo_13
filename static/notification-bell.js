@@ -41,7 +41,7 @@ class NotificationBell extends HTMLElement {
         this.interval = setInterval(() => this.checkNotifications(), 5000);
 
         // Manejar el evento de clic para traer todas las notificaciones
-        this.shadowRoot.getElementById('notification-bell').addEventListener('click', () => this.fetchAllNotifications());
+        this.shadowRoot.getElementById('notification-bell').addEventListener('click', () => window.location.href = '/check_recommendations.html');
     }
 
     disconnectedCallback() {

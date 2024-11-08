@@ -1,7 +1,6 @@
 document.getElementById('symptoms-form').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío normal del formulario
 
-    const username = document.getElementById('username').value;
     const symptoms = document.getElementById('symptoms').value;
 
     fetch('/register_symptoms', {
@@ -9,15 +8,13 @@ document.getElementById('symptoms-form').addEventListener('submit', function(eve
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, symptoms })
+        body: JSON.stringify({ symptoms })
     })
     .then(response => response.json())
     .then(data => {
         const messageDiv = document.getElementById('message');
         messageDiv.className = data.success ? 'success' : 'error'; // Cambiar clase según el resultado
         messageDiv.textContent = data.message; // Mostrar mensaje de éxito o error
-        const doctorDiv = document.getElementById('doctor');
-        doctorDiv.textContent = data.doctoria; // Mostrar mensaje de éxito o error
         if (data.success) {
             document.getElementById('symptoms-form').reset(); // Limpiar el formulario
         }
