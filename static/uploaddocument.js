@@ -1,10 +1,8 @@
 document.getElementById('document-form').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío normal del formulario
 
-    const username = document.getElementById('username').value;
     const documentFile = document.getElementById('document').files[0];
     const formData = new FormData();
-    formData.append('username', username);
     formData.append('document', documentFile);
 
     fetch('/upload_document', {

@@ -132,18 +132,22 @@ def register_symptoms():
 @app.route('/upload_document', methods=['POST'])
 def upload_document():
     if 'document' not in request.files:
-        return jsonify({'success': False, 'message': 'No se encontró el archivo.'})
+        return jsonify({'success': False, 'message': 'No se encontró el archivo.'}), 400
 
     file = request.files['document']
-    username = request.form['username']
+    username = session['username']['username']
 
     if file.filename == '':
-        return jsonify({'success': False, 'message': 'No se seleccionó ningún archivo.'})
+        return jsonify({'success': False, 'message': 'No se seleccionó ningún archivo.'}), 400
 
+    if not file.filename.endswith('.pdf'):
+        return jsonify({'success': False, 'message': 'El archivo debe ser un PDF.'}), 400
+
+    # Save the file
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
     file.save(file_path)
 
-    # Aquí puedes guardar la información en la base de datos si es necesario
+    # Save file info to the database
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO documents (username, file_path, file_name) VALUES (%s, %s, %s)', (username, file_path, file.filename))
@@ -167,8 +171,8 @@ def get_recommendations(username, tiporecomendacion):
     cursorUpdate = conn.cursor()
 
     cursorUpdate.execute(
-        'UPDATE recommendations rec INNER JOIN symptoms sym ON rec.symptom_id=sym.id INNER JOIN users ON sym.username=users.username SET rec.checked = %s WHERE users.username=%s',
-        (1, usernameVar['username'])
+        'UPDATE recommendations rec INNER JOIN symptoms sym ON rec.symptom_id=sym.id INNER JOIN users ON sym.username=users.username SET rec.checked = %s WHERE users.username=%s  AND rec.tipo_de_recomendacion_id=%s',
+        (1, usernameVar['username'], tiporecomendacion)
     )
     conn.commit()
 
